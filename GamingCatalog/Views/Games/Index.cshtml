@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Data.Entities.Game>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <header class="jumbotron">
+        <br />
+        <h1 class="display-3 text-white text-center">Welcome!</h1>
+        
+    </header>
+
+
+<div class="container">
+    <form asp-controller="Games" asp-action="Index">
+        <p>
+            Manufacturer: @Html.DropDownList("gameManufacturer", "All")
+            Title: <input type="text" name="SearchString">
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+    <div class="row text-center">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100">
+                    @{
+                        var base64 = Convert.ToBase64String(item.Image);
+                        var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+
+                    }
+                    <img class="card-img-top" src="@imgsrc" style="height:150px"/>
+                    <div class="card-body">
+                        <h4 class="card-title">@item.Title</h4>
+                        <p class="card-text">@item.Manufacturer.Name</p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn-sm btn-success" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
